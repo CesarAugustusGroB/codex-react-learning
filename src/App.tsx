@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import ExpenseForm from './components/ExpenseForm';
+import ExpenseFilters from './components/ExpenseFilters';
+import ExpenseList from './components/ExpenseList';
+import ExpenseSummary from './components/ExpenseSummary';
+import ExpenseChart from './components/ExpenseChart';
+import { ExpenseProvider } from './context';
+import styles from './App.module.css';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ExpenseProvider>
+      <div className={styles.container}>
+        <header className={styles.header}>
+          <h1>My Expense Tracker</h1>
+        </header>
+        <ExpenseForm />
+        <ExpenseFilters />
+        <div className={styles.layout}>
+          <ExpenseList />
+          <aside className={styles.sidebar}>
+            <ExpenseSummary />
+            <ExpenseChart />
+          </aside>
+        </div>
+      </div>
+    </ExpenseProvider>
   );
 };
 
