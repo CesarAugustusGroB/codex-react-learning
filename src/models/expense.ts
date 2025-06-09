@@ -1,7 +1,19 @@
+export interface Category {
+  id: number;
+  name: string;
+}
+
 export interface Expense {
-  id: string;
-  title: string;
+  id: number;
+  description: string;
   amount: number;
-  date: string;
-  category?: string;
+  category: Category;
+  date: Date;
+}
+
+export interface ExpenseFilterState {
+  categoryId?: number;
+  text?: string;
+  startDate?: Date;
+  endDate?: Date;
 }
