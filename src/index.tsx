@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './styles/global.css';
 import App from './App';
-import { ExpenseProvider } from './context';
 import reportWebVitals from './reportWebVitals';
 
 const container = document.getElementById('root');
@@ -14,9 +13,7 @@ if (!container) {
 const root = ReactDOM.createRoot(container);
 root.render(
   <React.StrictMode>
-    <ExpenseProvider>
-      <App />
-    </ExpenseProvider>
+    <App />
   </React.StrictMode>
 );
 
