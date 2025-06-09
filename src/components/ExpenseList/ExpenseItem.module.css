@@ -1,0 +1,11 @@
+.item {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  list-style: none;
+}
+.buttons {
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
