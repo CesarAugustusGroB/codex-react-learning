@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './ExpenseFilters.module.css';
 import { useExpenses } from '../../hooks';
+import { Expense } from '../../models/expense';
 
 // Format a Date object into YYYY-MM-DD for date inputs
 const formatInputDate = (date?: Date) =>
@@ -15,7 +16,7 @@ const ExpenseFilters: React.FC = () => {
   // Collect unique categories from expenses
   const categories = React.useMemo(() => {
     const map = new Map<number, string>();
-    expenses.forEach((exp) => {
+    expenses.forEach((exp: Expense) => {
       map.set(exp.category.id, exp.category.name);
     });
     return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
