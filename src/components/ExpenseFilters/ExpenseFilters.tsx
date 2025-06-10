@@ -26,9 +26,13 @@ const ExpenseFilters: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const startDate = e.target.value ? new Date(e.target.value) : undefined;
+    let endDate = filter.endDate;
+    if (startDate && endDate && startDate > endDate) {
+      endDate = startDate;
+    }
     dispatch({
       type: 'SET_FILTER_DATE_RANGE',
-      payload: { startDate, endDate: filter.endDate },
+      payload: { startDate, endDate },
     });
   };
 
@@ -36,9 +40,13 @@ const ExpenseFilters: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const endDate = e.target.value ? new Date(e.target.value) : undefined;
+    let startDate = filter.startDate;
+    if (startDate && endDate && endDate < startDate) {
+      startDate = endDate;
+    }
     dispatch({
       type: 'SET_FILTER_DATE_RANGE',
-      payload: { startDate: filter.startDate, endDate },
+      payload: { startDate, endDate },
     });
   };
 

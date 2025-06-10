@@ -1,6 +1,7 @@
 import React from 'react';
 import { useExpenses } from '../../hooks';
 import styles from './ExpenseChart.module.css';
+import { filterExpenses } from '../../utils/filterExpenses';
 
 // Chart types supported
 type ChartType = 'category' | 'time';
@@ -25,23 +26,10 @@ const ExpenseChart: React.FC = () => {
   const [chartType, setChartType] = React.useState<ChartType>('category');
 
   // Apply same filtering logic as other components
-  const filteredExpenses = React.useMemo(() => {
-    return expenses.filter((exp) => {
-      if (filter.categoryId && exp.category.id !== filter.categoryId) {
-        return false;
-      }
-      if (filter.startDate && exp.date < filter.startDate) {
-        return false;
-      }
-      if (filter.endDate && exp.date > filter.endDate) {
-        return false;
-      }
-      if (filter.text && !exp.description.toLowerCase().includes(filter.text.toLowerCase())) {
-        return false;
-      }
-      return true;
-    });
-  }, [expenses, filter]);
+  const filteredExpenses = React.useMemo(
+    () => filterExpenses(expenses, filter),
+    [expenses, filter],
+  );
 
   const categoryTotals = React.useMemo(() => {
     const map = new Map<number, { name: string; total: number }>();
