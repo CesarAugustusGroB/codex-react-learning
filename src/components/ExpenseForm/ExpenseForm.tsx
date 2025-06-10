@@ -28,9 +28,37 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
   const [date, setDate] = React.useState(
     expense ? expense.date.toISOString().split('T')[0] : '',
   );
+  const [errors, setErrors] = React.useState<{
+    description?: string;
+    amount?: string;
+  }>({});
+
+  const resetForm = () => {
+    setDescription('');
+    setAmount('');
+    setCategoryId(CATEGORIES[0].id);
+    setDate('');
+    setErrors({});
+  };
+
+  const handleCancel = () => {
+    resetForm();
+    onCancel?.();
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const validationErrors: { description?: string; amount?: string } = {};
+    if (!description.trim()) {
+      validationErrors.description = 'Please enter a description.';
+    }
+    if (!amount || isNaN(Number(amount)) || parseFloat(amount) <= 0) {
+      validationErrors.amount = 'Amount must be greater than 0.';
+    }
+    if (Object.keys(validationErrors).length) {
+      setErrors(validationErrors);
+      return;
+    }
     const selectedCategory =
       CATEGORIES.find((c) => c.id === categoryId) || CATEGORIES[CATEGORIES.length - 1];
     const updated: Expense = {
@@ -41,6 +69,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
       date: date ? new Date(date) : new Date(),
     };
     dispatch({ type: expense ? 'EDIT_EXPENSE' : 'ADD_EXPENSE', payload: updated });
+    resetForm();
     onCancel?.();
   };
 
@@ -51,12 +80,14 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
+      {errors.description && <span className={styles.error}>{errors.description}</span>}
       <Input
         type="number"
         placeholder="Amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
+      {errors.amount && <span className={styles.error}>{errors.amount}</span>}
       <select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))}>
         {CATEGORIES.map((cat) => (
           <option key={cat.id} value={cat.id}>
@@ -71,7 +102,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
       />
       <div className={styles.buttons}>
         <Button type="submit">Save</Button>
-        {onCancel && <Button onClick={onCancel}>Cancel</Button>}
+        {onCancel && <Button onClick={handleCancel}>Cancel</Button>}
       </div>
     </form>
   );
