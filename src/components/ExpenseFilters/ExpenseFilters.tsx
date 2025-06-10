@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ExpenseFilters.module.css';
 import { useExpenses } from '../../hooks';
-import { Expense } from '../../models/expense';
+import { CATEGORIES } from '../../constants';
 
 // Format a Date object into YYYY-MM-DD for date inputs
 const formatInputDate = (date?: Date) =>
@@ -9,18 +9,10 @@ const formatInputDate = (date?: Date) =>
 
 const ExpenseFilters: React.FC = () => {
   const {
-    state: { expenses, filter },
+    state: { filter },
     dispatch,
   } = useExpenses();
 
-  // Collect unique categories from expenses
-  const categories = React.useMemo(() => {
-    const map = new Map<number, string>();
-    expenses.forEach((exp: Expense) => {
-      map.set(exp.category.id, exp.category.name);
-    });
-    return Array.from(map.entries()).map(([id, name]) => ({ id, name }));
-  }, [expenses]);
 
   const handleCategoryChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -57,7 +49,7 @@ const ExpenseFilters: React.FC = () => {
         onChange={handleCategoryChange}
       >
         <option value="">All</option>
-        {categories.map((cat) => (
+        {CATEGORIES.map((cat) => (
           <option key={cat.id} value={cat.id}>
             {cat.name}
           </option>

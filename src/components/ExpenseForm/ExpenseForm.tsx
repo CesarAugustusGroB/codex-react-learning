@@ -4,6 +4,7 @@ import { Expense } from '../../models/expense';
 import { useExpenses } from '../../hooks';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { CATEGORIES } from '../../constants';
 
 interface ExpenseFormProps {
   expense?: Expense;
@@ -19,8 +20,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
   const [amount, setAmount] = React.useState(
     expense ? String(expense.amount) : '',
   );
-  const [category, setCategory] = React.useState(
-    expense?.category.name ?? '',
+  const [categoryId, setCategoryId] = React.useState<number>(
+    expense && CATEGORIES.some((c) => c.id === expense.category.id)
+      ? expense.category.id
+      : CATEGORIES[0].id,
   );
   const [date, setDate] = React.useState(
     expense ? expense.date.toISOString().split('T')[0] : '',
@@ -28,11 +31,13 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const selectedCategory =
+      CATEGORIES.find((c) => c.id === categoryId) || CATEGORIES[CATEGORIES.length - 1];
     const updated: Expense = {
       id: expense ? expense.id : Date.now(),
       description,
       amount: parseFloat(amount) || 0,
-      category: expense?.category ?? { id: Date.now(), name: category },
+      category: { ...selectedCategory },
       date: date ? new Date(date) : new Date(),
     };
     dispatch({ type: expense ? 'EDIT_EXPENSE' : 'ADD_EXPENSE', payload: updated });
@@ -52,11 +57,13 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
-      <Input
-        placeholder="Category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
+      <select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))}>
+        {CATEGORIES.map((cat) => (
+          <option key={cat.id} value={cat.id}>
+            {cat.name}
+          </option>
+        ))}
+      </select>
       <Input
         type="date"
         value={date}
