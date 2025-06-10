@@ -1,4 +1,5 @@
 import React from 'react';
+import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { useExpenses } from '../../hooks';
 import styles from './ExpenseChart.module.css';
 import { filterExpenses } from '../../utils/filterExpenses';
@@ -32,13 +33,13 @@ const ExpenseChart: React.FC = () => {
   );
 
   const categoryTotals = React.useMemo(() => {
-    const map = new Map<number, { name: string; total: number }>();
+    const map = new Map<number, { name: string; value: number }>();
     filteredExpenses.forEach((exp) => {
       const entry = map.get(exp.category.id);
       if (entry) {
-        entry.total += exp.amount;
+        entry.value += exp.amount;
       } else {
-        map.set(exp.category.id, { name: exp.category.name, total: exp.amount });
+        map.set(exp.category.id, { name: exp.category.name, value: exp.amount });
       }
     });
     return Array.from(map.values());
@@ -55,25 +56,6 @@ const ExpenseChart: React.FC = () => {
       .sort((a, b) => a.period.localeCompare(b.period));
   }, [filteredExpenses]);
 
-  // Prepare pie slices
-  const pieSlices = React.useMemo(() => {
-    const total = categoryTotals.reduce((sum, c) => sum + c.total, 0) || 1;
-    let cumulative = 0;
-    const radius = 75;
-    return categoryTotals.map((cat, index) => {
-      const startAngle = (cumulative / total) * 2 * Math.PI;
-      cumulative += cat.total;
-      const endAngle = (cumulative / total) * 2 * Math.PI;
-      const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
-      const x1 = radius + radius * Math.sin(startAngle);
-      const y1 = radius - radius * Math.cos(startAngle);
-      const x2 = radius + radius * Math.sin(endAngle);
-      const y2 = radius - radius * Math.cos(endAngle);
-      const d = `M${radius},${radius} L${x1},${y1} A${radius},${radius} 0 ${largeArc} 1 ${x2},${y2} Z`;
-      return { d, color: COLORS[index % COLORS.length] };
-    });
-  }, [categoryTotals]);
-
   return (
     <div className={styles.chart}>
       <div className={styles.controls}>
@@ -83,29 +65,26 @@ const ExpenseChart: React.FC = () => {
         </select>
       </div>
       {chartType === 'category' ? (
-        <svg width={150} height={150} viewBox="0 0 150 150">
-          {pieSlices.map((slice, i) => (
-            <path key={i} d={slice.d} fill={slice.color} />
-          ))}
-        </svg>
+        <ResponsiveContainer width="100%" height={250}>
+          <PieChart>
+            <Pie data={categoryTotals} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
+              {categoryTotals.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
       ) : (
-        <svg width={200} height={150} viewBox="0 0 200 150">
-          {timeTotals.map((t, i) => {
-            const max = Math.max(...timeTotals.map((tt) => tt.total), 1);
-            const barWidth = 180 / timeTotals.length;
-            const barHeight = (t.total / max) * 100;
-            return (
-              <rect
-                key={t.period}
-                x={10 + i * barWidth}
-                y={130 - barHeight}
-                width={barWidth - 4}
-                height={barHeight}
-                fill="#4e79a7"
-              />
-            );
-          })}
-        </svg>
+        <ResponsiveContainer width="100%" height={250}>
+          <BarChart data={timeTotals} margin={{ top: 5, right: 5, left: 0, bottom: 5 }}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="period" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="total" fill="#4e79a7" />
+          </BarChart>
+        </ResponsiveContainer>
       )}
     </div>
   );
