@@ -2,7 +2,7 @@ import React from 'react';
 import { useExpenses } from '../../hooks';
 import styles from './ExpenseSummary.module.css';
 import { formatCurrency } from '../../utils/numberUtils';
-import { isBefore, isAfter } from 'date-fns';
+import { isBefore, isAfter } from '../../utils/dateUtils';
 
 const ExpenseSummary: React.FC = () => {
   const {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useExpenses } from '../../hooks';
 import styles from './ExpenseChart.module.css';
-import { isBefore, isAfter } from 'date-fns';
+import { isBefore, isAfter } from '../../utils/dateUtils';
 
 // Chart types supported
 type ChartType = 'category' | 'time';

@@ -4,7 +4,7 @@ import ExpenseForm from '../ExpenseForm/ExpenseForm';
 import styles from './ExpenseList.module.css';
 import { useExpenses } from '../../hooks';
 import { Expense } from '../../models/expense';
-import { isBefore, isAfter } from 'date-fns';
+import { isBefore, isAfter } from '../../utils/dateUtils';
 
 const ExpenseList: React.FC = () => {
   const {
