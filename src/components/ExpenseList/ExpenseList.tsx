@@ -4,6 +4,7 @@ import ExpenseForm from '../ExpenseForm/ExpenseForm';
 import styles from './ExpenseList.module.css';
 import { useExpenses } from '../../hooks';
 import { Expense } from '../../models/expense';
+import { isBefore, isAfter } from 'date-fns';
 
 const ExpenseList: React.FC = () => {
   const {
@@ -18,10 +19,10 @@ const ExpenseList: React.FC = () => {
       if (filter.categoryId && exp.category.id !== filter.categoryId) {
         return false;
       }
-      if (filter.startDate && exp.date < filter.startDate) {
+      if (filter.startDate && isBefore(exp.date, filter.startDate)) {
         return false;
       }
-      if (filter.endDate && exp.date > filter.endDate) {
+      if (filter.endDate && isAfter(exp.date, filter.endDate)) {
         return false;
       }
       if (filter.text && !exp.description.toLowerCase().includes(filter.text.toLowerCase())) {
