@@ -2,10 +2,10 @@ import React from 'react';
 import styles from './ExpenseFilters.module.css';
 import { useExpenses } from '../../hooks';
 import { Expense } from '../../models/expense';
+import { parseDate, formatDate } from '../../utils/dateUtils';
 
-// Format a Date object into YYYY-MM-DD for date inputs
-const formatInputDate = (date?: Date) =>
-  date ? date.toISOString().split('T')[0] : '';
+// Format date for display in the inputs
+const formatInputDate = (date?: Date) => (date ? formatDate(date) : '');
 
 const ExpenseFilters: React.FC = () => {
   const {
@@ -33,7 +33,7 @@ const ExpenseFilters: React.FC = () => {
   const handleStartDateChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const startDate = e.target.value ? new Date(e.target.value) : undefined;
+    const startDate = e.target.value ? parseDate(e.target.value) : undefined;
     dispatch({
       type: 'SET_FILTER_DATE_RANGE',
       payload: { startDate, endDate: filter.endDate },
@@ -43,7 +43,7 @@ const ExpenseFilters: React.FC = () => {
   const handleEndDateChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const endDate = e.target.value ? new Date(e.target.value) : undefined;
+    const endDate = e.target.value ? parseDate(e.target.value) : undefined;
     dispatch({
       type: 'SET_FILTER_DATE_RANGE',
       payload: { startDate: filter.startDate, endDate },
@@ -64,12 +64,14 @@ const ExpenseFilters: React.FC = () => {
         ))}
       </select>
       <input
-        type="date"
+        type="text"
+        placeholder="dd/mm/yyyy"
         value={formatInputDate(filter.startDate)}
         onChange={handleStartDateChange}
       />
       <input
-        type="date"
+        type="text"
+        placeholder="dd/mm/yyyy"
         value={formatInputDate(filter.endDate)}
         onChange={handleEndDateChange}
       />

@@ -4,6 +4,7 @@ import { Expense } from '../../models/expense';
 import { useExpenses } from '../../hooks';
 import Button from '../common/Button';
 import Input from '../common/Input';
+import { parseDate, formatDate } from '../../utils/dateUtils';
 
 interface ExpenseFormProps {
   expense?: Expense;
@@ -23,7 +24,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
     expense?.category.name ?? '',
   );
   const [date, setDate] = React.useState(
-    expense ? expense.date.toISOString().split('T')[0] : '',
+    expense ? formatDate(expense.date) : '',
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -33,7 +34,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
       description,
       amount: parseFloat(amount) || 0,
       category: expense?.category ?? { id: Date.now(), name: category },
-      date: date ? new Date(date) : new Date(),
+      date: date ? parseDate(date) : new Date(),
     };
     dispatch({ type: expense ? 'EDIT_EXPENSE' : 'ADD_EXPENSE', payload: updated });
     onCancel?.();
@@ -58,7 +59,8 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
         onChange={(e) => setCategory(e.target.value)}
       />
       <Input
-        type="date"
+        type="text"
+        placeholder="dd/mm/yyyy"
         value={date}
         onChange={(e) => setDate(e.target.value)}
       />

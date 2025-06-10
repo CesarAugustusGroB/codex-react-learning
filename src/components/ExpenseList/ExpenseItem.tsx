@@ -3,6 +3,7 @@ import { Expense } from '../../models/expense';
 import Button from '../common/Button';
 import styles from './ExpenseItem.module.css';
 import { formatCurrency } from '../../utils/numberUtils';
+import { formatDate } from '../../utils/dateUtils';
 
 interface Props {
   expense: Expense;
@@ -16,7 +17,7 @@ const ExpenseItem: React.FC<Props> = ({ expense, onEdit, onDelete }) => {
       <span>{expense.description}</span>
       <span>{formatCurrency(expense.amount)}</span>
       <span>{expense.category.name}</span>
-      <span>{expense.date.toLocaleDateString()}</span>
+      <span>{formatDate(expense.date)}</span>
       <div className={styles.buttons}>
         <Button onClick={onEdit}>Edit</Button>
         <Button onClick={onDelete}>Delete</Button>

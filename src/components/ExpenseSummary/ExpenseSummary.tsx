@@ -2,6 +2,7 @@ import React from 'react';
 import { useExpenses } from '../../hooks';
 import styles from './ExpenseSummary.module.css';
 import { formatCurrency } from '../../utils/numberUtils';
+import { isBefore, isAfter } from 'date-fns';
 
 const ExpenseSummary: React.FC = () => {
   const {
@@ -13,10 +14,10 @@ const ExpenseSummary: React.FC = () => {
       if (filter.categoryId && exp.category.id !== filter.categoryId) {
         return false;
       }
-      if (filter.startDate && exp.date < filter.startDate) {
+      if (filter.startDate && isBefore(exp.date, filter.startDate)) {
         return false;
       }
-      if (filter.endDate && exp.date > filter.endDate) {
+      if (filter.endDate && isAfter(exp.date, filter.endDate)) {
         return false;
       }
       if (filter.text && !exp.description.toLowerCase().includes(filter.text.toLowerCase())) {
