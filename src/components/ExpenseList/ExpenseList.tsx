@@ -4,6 +4,7 @@ import ExpenseForm from '../ExpenseForm/ExpenseForm';
 import styles from './ExpenseList.module.css';
 import { useExpenses } from '../../hooks';
 import { Expense } from '../../models/expense';
+import { filterExpenses } from '../../utils/filterExpenses';
 
 const ExpenseList: React.FC = () => {
   const {
@@ -13,23 +14,10 @@ const ExpenseList: React.FC = () => {
 
   const [editingExpense, setEditingExpense] = React.useState<Expense | null>(null);
 
-  const filteredExpenses = React.useMemo(() => {
-    return expenses.filter((exp) => {
-      if (filter.categoryId && exp.category.id !== filter.categoryId) {
-        return false;
-      }
-      if (filter.startDate && exp.date < filter.startDate) {
-        return false;
-      }
-      if (filter.endDate && exp.date > filter.endDate) {
-        return false;
-      }
-      if (filter.text && !exp.description.toLowerCase().includes(filter.text.toLowerCase())) {
-        return false;
-      }
-      return true;
-    });
-  }, [expenses, filter]);
+  const filteredExpenses = React.useMemo(
+    () => filterExpenses(expenses, filter),
+    [expenses, filter],
+  );
 
   const handleDelete = (id: number) => {
     dispatch({ type: 'DELETE_EXPENSE', payload: id });
