@@ -33,13 +33,13 @@ const ExpenseChart: React.FC = () => {
   );
 
   const categoryTotals = React.useMemo(() => {
-    const map = new Map<number, { name: string; value: number }>();
+    const map = new Map<number, { name: string; total: number }>();
     filteredExpenses.forEach((exp) => {
       const entry = map.get(exp.category.id);
       if (entry) {
-        entry.value += exp.amount;
+        entry.total += exp.amount;
       } else {
-        map.set(exp.category.id, { name: exp.category.name, value: exp.amount });
+        map.set(exp.category.id, { name: exp.category.name, total: exp.amount });
       }
     });
     return Array.from(map.values());
@@ -67,7 +67,7 @@ const ExpenseChart: React.FC = () => {
       {chartType === 'category' ? (
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
-            <Pie data={categoryTotals} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
+            <Pie data={categoryTotals} dataKey="total" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
               {categoryTotals.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
