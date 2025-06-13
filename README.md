@@ -18,8 +18,15 @@ You may also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Runs the Jest test suite once and exits.
+
+### `npm run test:watch`
+
+Starts Jest in watch mode so tests re-run on file changes.
+
+### `npm run test:coverage`
+
+Generates a coverage report from Jest.
 
 ### `npm run build`
 
