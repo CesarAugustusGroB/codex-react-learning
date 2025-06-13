@@ -4,6 +4,11 @@
   margin: 1rem 0;
 }
 
+.error {
+  color: red;
+  font-size: 0.875rem;
+}
+
 @media (max-width: 480px) {
   .filters {
     flex-direction: column;
