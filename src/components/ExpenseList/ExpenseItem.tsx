@@ -1,7 +1,13 @@
 import React from 'react';
 import { Expense } from '../../models/expense';
-import Button from '../common/Button';
-import styles from './ExpenseItem.module.css';
+import {
+  Badge,
+  HStack,
+  IconButton,
+  ListItem,
+  Text,
+} from '@chakra-ui/react';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 import { formatCurrency } from '../../utils/numberUtils';
 
 interface Props {
@@ -12,16 +18,18 @@ interface Props {
 
 const ExpenseItem: React.FC<Props> = ({ expense, onEdit, onDelete }) => {
   return (
-    <li className={styles.item}>
-      <span>{expense.description}</span>
-      <span>{formatCurrency(expense.amount)}</span>
-      <span>{expense.category.name}</span>
-      <span>{expense.date.toLocaleDateString()}</span>
-      <div className={styles.buttons}>
-        <Button onClick={onEdit}>Edit</Button>
-        <Button onClick={onDelete}>Delete</Button>
-      </div>
-    </li>
+    <ListItem _hover={{ bg: 'gray.50', _dark: { bg: 'gray.700' } }} p={2} borderRadius="md">
+      <HStack spacing={3} align="center">
+        <Text flex="1">{expense.description}</Text>
+        <Text>{formatCurrency(expense.amount)}</Text>
+        <Badge>{expense.category.name}</Badge>
+        <Text>{expense.date.toLocaleDateString()}</Text>
+        <HStack marginLeft="auto">
+          <IconButton aria-label="Edit" icon={<FaEdit />} size="sm" onClick={onEdit} />
+          <IconButton aria-label="Delete" icon={<FaTrash />} size="sm" onClick={onDelete} />
+        </HStack>
+      </HStack>
+    </ListItem>
   );
 };
 

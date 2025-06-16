@@ -5,17 +5,19 @@ import ExpenseList from './components/ExpenseList';
 import ExpenseSummary from './components/ExpenseSummary';
 import ExpenseChart from './components/ExpenseChart';
 import { ExpenseProvider } from './context';
-import { Box, Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading, Spacer } from '@chakra-ui/react';
+import { ColorModeToggle } from './components/common';
 
 const App: React.FC = () => {
   return (
     <ExpenseProvider>
       <Box maxW="900px" mx="auto" p={4}>
-        <Box as="header" textAlign="center" mb={4}>
-          <Heading as="h1" size="lg">
+        <Flex as="header" align="center" mb={4}>
+          <Heading as="h1" size="lg" flex="1" textAlign="center">
             My Expense Tracker
           </Heading>
-        </Box>
+          <ColorModeToggle />
+        </Flex>
         <ExpenseForm />
         <ExpenseFilters />
         <Flex direction={{ base: 'column', md: 'row' }} gap={4} align={{ md: 'flex-start' }}>

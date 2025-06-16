@@ -28,12 +28,12 @@ it('renders expense items', () => {
 
 it('allows deleting an expense', () => {
   const { dispatch } = renderWithContext(<ExpenseList />, { state: { expenses, filter: {} } });
-  fireEvent.click(screen.getAllByText('Delete')[0]);
+  fireEvent.click(screen.getAllByLabelText('Delete')[0]);
   expect(dispatch).toHaveBeenCalledWith({ type: 'DELETE_EXPENSE', payload: 1 });
 });
 
 it('shows edit form when clicking edit', () => {
   renderWithContext(<ExpenseList />, { state: { expenses, filter: {} } });
-  fireEvent.click(screen.getAllByText('Edit')[0]);
+  fireEvent.click(screen.getAllByLabelText('Edit')[0]);
   expect(screen.getByRole('button', { name: /save/i })).toBeInTheDocument();
 });
