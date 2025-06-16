@@ -1,7 +1,7 @@
 import React from 'react';
 import ExpenseItem from './ExpenseItem';
 import ExpenseForm from '../ExpenseForm/ExpenseForm';
-import styles from './ExpenseList.module.css';
+import { List, ListItem } from '@chakra-ui/react';
 import { useExpenses } from '../../hooks';
 import { Expense } from '../../models/expense';
 import { filterExpenses } from '../../utils/filterExpenses';
@@ -24,12 +24,12 @@ const ExpenseList: React.FC = () => {
   };
 
   return (
-    <ul className={styles.list}>
+    <List spacing={2} styleType="none" p={0} m={0}>
       {filteredExpenses.map((exp) =>
         editingExpense && editingExpense.id === exp.id ? (
-          <li key={exp.id}>
+          <ListItem key={exp.id}>
             <ExpenseForm expense={editingExpense} onCancel={() => setEditingExpense(null)} />
-          </li>
+          </ListItem>
         ) : (
           <ExpenseItem
             key={exp.id}
@@ -39,7 +39,7 @@ const ExpenseList: React.FC = () => {
           />
         ),
       )}
-    </ul>
+    </List>
   );
 };
 
