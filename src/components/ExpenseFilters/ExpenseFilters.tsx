@@ -1,5 +1,12 @@
 import React from "react";
-import styles from "./ExpenseFilters.module.css";
+import {
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Select,
+  Stack,
+} from "@chakra-ui/react";
 import { useExpenses } from "../../hooks";
 import { CATEGORIES } from "../../constants";
 
@@ -49,31 +56,36 @@ const ExpenseFilters: React.FC = () => {
   };
 
   return (
-    <div className={styles.filters}>
-      <select value={filter.categoryId ?? ""} onChange={handleCategoryChange}>
-        <option value="">All</option>
-        {CATEGORIES.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.name}
-          </option>
-        ))}
-      </select>
-      <input
-        type="date"
-        value={formatInputDate(filter.startDate)}
-        onChange={handleStartDateChange}
-      />
-      <input
-        type="date"
-        value={formatInputDate(filter.endDate)}
-        onChange={handleEndDateChange}
-      />
-      {error && (
-        <span role="alert" className={styles.error}>
-          {error}
-        </span>
-      )}
-    </div>
+    <Stack spacing={3} direction={{ base: "column", md: "row" }}>
+      <FormControl maxW="200px">
+        <FormLabel>Category</FormLabel>
+        <Select value={filter.categoryId ?? ""} onChange={handleCategoryChange}>
+          <option value="">All</option>
+          {CATEGORIES.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+      <FormControl isInvalid={!!error}>
+        <FormLabel>Start Date</FormLabel>
+        <Input
+          type="date"
+          value={formatInputDate(filter.startDate)}
+          onChange={handleStartDateChange}
+        />
+      </FormControl>
+      <FormControl isInvalid={!!error}>
+        <FormLabel>End Date</FormLabel>
+        <Input
+          type="date"
+          value={formatInputDate(filter.endDate)}
+          onChange={handleEndDateChange}
+        />
+        <FormErrorMessage>{error}</FormErrorMessage>
+      </FormControl>
+    </Stack>
   );
 };
 

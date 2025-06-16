@@ -1,6 +1,6 @@
 import React from 'react';
 import { useExpenses } from '../../hooks';
-import styles from './ExpenseSummary.module.css';
+import { Box, Heading, List, ListItem, Stack, Text } from '@chakra-ui/react';
 import { formatCurrency } from '../../utils/numberUtils';
 import { filterExpenses } from '../../utils/filterExpenses';
 
@@ -33,16 +33,21 @@ const ExpenseSummary: React.FC = () => {
   }, [filteredExpenses]);
 
   return (
-    <div className={styles.summary}>
-      <div className={styles.total}>Total: {formatCurrency(total)}</div>
-      <ul className={styles.categoryTotals}>
+    <Box mt={4}>
+      <Heading as="h2" size="md" mb={2}>
+        Total: {formatCurrency(total)}
+      </Heading>
+      <List styleType="none" p={0} m={0}>
         {categoryTotals.map((cat) => (
-          <li key={cat.name}>
-            {cat.name}: {formatCurrency(cat.total)}
-          </li>
+          <ListItem key={cat.name}>
+            <Stack direction="row" justify="space-between">
+              <Text>{cat.name}</Text>
+              <Text>{formatCurrency(cat.total)}</Text>
+            </Stack>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Box>
   );
 };
 

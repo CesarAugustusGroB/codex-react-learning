@@ -1,9 +1,7 @@
 import React from 'react';
-import styles from './ExpenseForm.module.css';
+import { Box, Button, FormControl, FormErrorMessage, FormLabel, Input, Select, Stack } from '@chakra-ui/react';
 import { Expense } from '../../models/expense';
 import { useExpenses } from '../../hooks';
-import Button from '../common/Button';
-import Input from '../common/Input';
 import { CATEGORIES } from '../../constants';
 
 interface ExpenseFormProps {
@@ -74,37 +72,53 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ expense, onCancel }) => {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <Input
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      {errors.description && <span className={styles.error}>{errors.description}</span>}
-      <Input
-        type="number"
-        placeholder="Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      {errors.amount && <span className={styles.error}>{errors.amount}</span>}
-      <select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))}>
-        {CATEGORIES.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.name}
-          </option>
-        ))}
-      </select>
-      <Input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-      />
-      <div className={styles.buttons}>
-        <Button type="submit">Save</Button>
-        {onCancel && <Button onClick={handleCancel}>Cancel</Button>}
-      </div>
-    </form>
+    <Box as="form" onSubmit={handleSubmit}>
+      <Stack spacing={3}>
+        <FormControl isInvalid={!!errors.description}>
+          <FormLabel>Description</FormLabel>
+          <Input
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+          <FormErrorMessage>{errors.description}</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={!!errors.amount}>
+          <FormLabel>Amount</FormLabel>
+          <Input
+            type="number"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <FormErrorMessage>{errors.amount}</FormErrorMessage>
+        </FormControl>
+        <FormControl>
+          <FormLabel>Category</FormLabel>
+          <Select value={categoryId} onChange={(e) => setCategoryId(Number(e.target.value))}>
+            {CATEGORIES.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl>
+          <FormLabel>Date</FormLabel>
+          <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        </FormControl>
+        <Stack direction={{ base: 'column', sm: 'row' }} pt={2}>
+          <Button type="submit" colorScheme="teal">
+            Save
+          </Button>
+          {onCancel && (
+            <Button onClick={handleCancel} variant="outline">
+              Cancel
+            </Button>
+          )}
+        </Stack>
+      </Stack>
+    </Box>
   );
 };
 
