@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 # 📄 Changelog
 
+## [v0.3.0-alpha] - 2025-06-09
+
+### ✨ Added
+- Integrated Chakra UI as the primary UI component library.
+- Added ChakraProvider with custom theming and CSS reset.
+- Refactored layout using Chakra `Box`, `Flex`, and `Grid` for better responsiveness.
+- Converted forms in ExpenseForm and ExpenseFilters to use Chakra form components (`Input`, `Select`, `Button`, `FormControl`, `FormLabel`, `FormErrorMessage`).
+- Enhanced ExpenseList and ExpenseItem with Chakra components and icons.
+- Redesigned ExpenseSummary and ExpenseChart containers with Chakra typography and layout utilities.
+- Implemented dark mode toggle with persistent theme preference.
+- Improved accessibility and keyboard navigation across the app.
+
+### 🛠️ Changed
+- Removed most legacy CSS styles, replacing them with Chakra styles.
+- Improved overall UI consistency, spacing, and responsiveness.
+
+### Notes
+- This release focuses on UI/UX improvements; core business logic remains unchanged.
+
 ## [v0.2.0-alpha] - 2025-06-10
 
 ### ✨ Added

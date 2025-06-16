@@ -1,7 +1,7 @@
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { useExpenses } from '../../hooks';
-import styles from './ExpenseChart.module.css';
+import { Box, Select, Stack } from '@chakra-ui/react';
 import { filterExpenses } from '../../utils/filterExpenses';
 
 // Chart types supported
@@ -57,13 +57,13 @@ const ExpenseChart: React.FC = () => {
   }, [filteredExpenses]);
 
   return (
-    <div className={styles.chart}>
-      <div className={styles.controls}>
-        <select value={chartType} onChange={(e) => setChartType(e.target.value as ChartType)}>
+    <Box mt={4}>
+      <Box mb={2} maxW="200px">
+        <Select value={chartType} onChange={(e) => setChartType(e.target.value as ChartType)}>
           <option value="category">By Category</option>
           <option value="time">By Month</option>
-        </select>
-      </div>
+        </Select>
+      </Box>
       {chartType === 'category' ? (
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
@@ -86,7 +86,7 @@ const ExpenseChart: React.FC = () => {
           </BarChart>
         </ResponsiveContainer>
       )}
-    </div>
+    </Box>
   );
 };
 
