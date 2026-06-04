@@ -1,79 +1,76 @@
-# Getting Started with Create React App
+# My Expense Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-Before running the project, install dependencies with `npm install`. The app uses Recharts for data visualizations.
+A small personal-expense tracking single-page app built as a React + TypeScript
+learning project. Add expenses, filter them by category, text or date range, and
+see live totals and a category breakdown chart. All data is persisted locally in
+the browser, so there is no backend to run.
 
+## Features
 
-## Available Scripts
+- **Add expenses** with a description, amount, category and date (`ExpenseForm`).
+- **Expense list** showing every entry, with the ability to remove items
+  (`ExpenseList` / `ExpenseItem`).
+- **Filtering** by category, free-text search, and start/end date range
+  (`ExpenseFilters`, backed by `utils/filterExpenses`).
+- **Summary** of filtered totals (`ExpenseSummary`).
+- **Category breakdown chart** rendered with Recharts (`ExpenseChart`).
+- **Light / dark mode** toggle (`ColorModeToggle`).
+- **Local persistence** — expenses are stored in `localStorage` via the
+  `useLocalStorage` hook, so they survive a page reload.
+- **Predefined categories**: Food, Rent, Transport, Utilities, Entertainment,
+  Others (`constants/categories.ts`).
+- **Tested** with Jest and React Testing Library, including a full
+  integration test of the expense flow.
 
-In the project directory, you can run:
+## Tech Stack
 
-### `npm start`
+- **React 19** with **TypeScript**
+- **Create React App** (`react-scripts` 5)
+- **Chakra UI** (`@chakra-ui/react`, Emotion, Framer Motion) for components and theming
+- **Recharts** for data visualisation
+- **React Context API** for state (`ExpenseContext` / `ExpenseProvider`)
+- **Jest** + **React Testing Library** for unit and integration tests
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting Started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Requires Node.js and npm.
 
-### `npm test`
+```bash
+npm install      # install dependencies
+npm start        # run the dev server at http://localhost:3000
+```
 
-Runs the Jest test suite once and exits.
+### Available scripts
 
-### `npm run test:watch`
+| Script                  | Description                                         |
+| ----------------------- | --------------------------------------------------- |
+| `npm start`             | Run the app in development mode.                     |
+| `npm run build`         | Build a production bundle into `build/`.            |
+| `npm test`              | Run the Jest test suite once and exit.              |
+| `npm run test:watch`    | Run Jest in watch mode.                             |
+| `npm run test:coverage` | Generate a Jest coverage report.                    |
+| `npm run eject`         | Eject from Create React App (one-way operation).    |
 
-Starts Jest in watch mode so tests re-run on file changes.
+## Project Structure
 
-### `npm run test:coverage`
+```
+src/
+├── App.tsx                  # App shell: composes the tracker UI inside ExpenseProvider
+├── index.tsx                # React entry point
+├── theme.ts                 # Chakra UI theme configuration
+├── components/
+│   ├── ExpenseForm/         # Form to add a new expense
+│   ├── ExpenseList/         # List of expenses + individual ExpenseItem
+│   ├── ExpenseFilters/      # Category / text / date-range filters
+│   ├── ExpenseSummary/      # Totals for the filtered set
+│   ├── ExpenseChart/        # Recharts category breakdown
+│   └── common/              # Shared UI (e.g. ColorModeToggle)
+├── context/                 # ExpenseContext + ExpenseProvider (global state)
+├── hooks/                   # useExpenses, useLocalStorage
+├── models/                  # Expense / Category / filter type definitions
+├── constants/               # Expense categories
+├── utils/                   # filterExpenses, date and number helpers
+└── __tests__/               # Integration tests
+```
 
-Generates a coverage report from Jest.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+> This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
